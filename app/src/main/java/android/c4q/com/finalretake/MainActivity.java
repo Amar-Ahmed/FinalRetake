@@ -30,6 +30,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+
         mRecyclerView = findViewById(R.id.recycler_view);
         LinearLayoutManager manager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(manager);
@@ -38,7 +40,8 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         mExampleList = new ArrayList<>();
-
+        mExampleAdapter = new Adapter(MainActivity.this, mExampleList);
+        mRecyclerView.setAdapter(mExampleAdapter);
 
         mRequestQueue = Volley.newRequestQueue(this);
         parseJSON();
@@ -46,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void parseJSON() {
-        String url = "https://deckofcardsapi.com/api/deck/new/draw/?count=9";
+        String url = "https://deckofcardsapi.com/api/deck/new/draw/?count=1";
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
@@ -58,15 +61,14 @@ public class MainActivity extends AppCompatActivity {
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject hit = jsonArray.getJSONObject(i);
 
-                                String cardValue = hit.getString("value");
                                 String imageUrl = hit.getString("image");
+                                String cardValue = hit.getString("value");
                                 //int likeCount = hit.getInt("likes");
 
                                 mExampleList.add(new Item(imageUrl, cardValue));
                             }
 
-                            mExampleAdapter = new Adapter(MainActivity.this, mExampleList);
-                            mRecyclerView.setAdapter(mExampleAdapter);
+                            mExampleAdapter.notifyDataSetChanged();
 
                         } catch (JSONException e) {
                             e.printStackTrace();

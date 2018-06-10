@@ -16,13 +16,13 @@
             android:layout_height="wrap_content"
             android:text="Cards Remaining :"
             android:textSize="14sp"
-            android:paddingLeft="14dp"
-            android:paddingTop="14dp"/>
+            android:layout_margin="8dp"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:hint="_"
             android:textSize="14sp"
+            android:layout_margin="8dp"
             />
 
         <Button
@@ -30,7 +30,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:text="@string/Shuffle"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:layout_margin="8dp"/>
 
     </LinearLayout>
     <LinearLayout
@@ -52,11 +53,13 @@
             android:layout_height="wrap_content"
             android:hint="@string/How_Many"
             android:textSize="14sp"
+            android:layout_margin="8dp"
             />
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/How_Many"/>
+            android:text="@string/How_Many"
+            android:layout_margin="8dp"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
