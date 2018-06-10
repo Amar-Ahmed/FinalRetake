@@ -1,3 +1,6 @@
 <resources>
-    <string name="app_name">FinalRetake</string>
+    <string name="app_name">AndroidAppFinal</string>
+    <string name="Shuffle">SHUFFLE NEW DECK</string>
+    <string name="Draw">Draw</string>
+    <string name="How_Many">How Many Cards</string>
 </resources>
