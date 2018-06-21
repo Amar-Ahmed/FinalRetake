@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void sendRequest() {
-        String url = "https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1\n";
+        String url = "https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1";
         final JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONArray>() {
                     @Override
