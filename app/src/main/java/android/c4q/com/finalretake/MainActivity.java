@@ -57,13 +57,13 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void sendRequest() {
-        String url = "https://deckofcardsapi.com/api/deck/new/draw/?count=2";
+        String url = "https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1\n";
         final JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
 
-                        for (int i = 0; i < 2; i++) {
+                        for (int i = 0; i < response.length(); i++) {
                             Item item = new Item();
 
 
