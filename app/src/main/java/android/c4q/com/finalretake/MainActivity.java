@@ -4,6 +4,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -29,12 +31,24 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<Item> mItemList;
 
      RequestQueue mRequestQueue;
+
+     EditText editText;
      //String result = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        editText = findViewById(R.id.inputCards);
+        if (Integer.parseInt(editText.getText().toString())<=0){
+            Toast.makeText(MainActivity.this, "Cant be less than 0", Toast.LENGTH_SHORT).show();
+
+        }
+        if (Integer.parseInt(editText.getText().toString())>=47){
+            Toast.makeText(MainActivity.this, "There are only remaing cards", Toast.LENGTH_SHORT).show();
+
+        }
 
         mRequestQueue = Volley.newRequestQueue(this);
 
