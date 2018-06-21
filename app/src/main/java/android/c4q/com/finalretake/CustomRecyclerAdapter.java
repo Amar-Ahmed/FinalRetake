@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.squareup.picasso.Picasso;
@@ -17,11 +18,11 @@ import java.util.ArrayList;
  * Created by C4Q on 6/9/18.
  */
 
-public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
+public class CustomRecyclerAdapter extends RecyclerView.Adapter<CustomRecyclerAdapter.ViewHolder> {
     private Context mContext;
     private ArrayList<Item> itemArrayList;
 
-    public Adapter (Context context, ArrayList<Item> list){
+    public CustomRecyclerAdapter(Context context, ArrayList<Item> list){
         mContext=context;
         itemArrayList=list;
     }
@@ -34,6 +35,8 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+        holder.itemView.setTag(itemArrayList.get(position));
+
         Item currentItem = itemArrayList.get(position);
 
         String imageUrl = currentItem.getmImageUrl();
@@ -59,6 +62,12 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
             super(itemView);
             mImageView = itemView.findViewById(R.id.image_view);
             mTextView = itemView.findViewById(R.id.info);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(mContext, "This is my Toast message!",Toast.LENGTH_LONG).show();
+                }
+            });
         }
     }
 }

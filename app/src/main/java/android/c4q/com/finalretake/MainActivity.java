@@ -9,6 +9,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -17,62 +18,78 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
-    private RecyclerView mRecyclerView;
-    private Adapter mExampleAdapter;
-    private ArrayList<Item> mExampleList;
-    private RequestQueue mRequestQueue;
+     RecyclerView recyclerView;
+    RecyclerView.Adapter mExampleCustomRecyclerAdapter;
+    RecyclerView.LayoutManager layoutManager;
+
+    ArrayList<Item> mItemList;
+
+     RequestQueue mRequestQueue;
+     //String result = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-
-        mRecyclerView = findViewById(R.id.recycler_view);
-        LinearLayoutManager manager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(manager);
-
-        mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        mExampleList = new ArrayList<>();
-        mExampleAdapter = new Adapter(MainActivity.this, mExampleList);
-        mRecyclerView.setAdapter(mExampleAdapter);
-
         mRequestQueue = Volley.newRequestQueue(this);
-        parseJSON();
+
+        recyclerView = findViewById(R.id.recycler_view);
+        recyclerView.setHasFixedSize(true);
+
+         layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+
+
+
+        mItemList = new ArrayList<>();
+
+        mExampleCustomRecyclerAdapter = new CustomRecyclerAdapter(MainActivity.this, mItemList);
+        recyclerView.setAdapter(mExampleCustomRecyclerAdapter);
+
+
+        sendRequest();
     }
 
 
-    private void parseJSON() {
-        String url = "https://deckofcardsapi.com/api/deck/new/draw/?count=1";
-
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
-                new Response.Listener<JSONObject>() {
+    private void sendRequest() {
+        String url = "https://deckofcardsapi.com/api/deck/new/draw/?count=2";
+        final JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONArray>() {
                     @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            JSONArray jsonArray = response.getJSONArray("hits");
+                    public void onResponse(JSONArray response) {
 
-                            for (int i = 0; i < jsonArray.length(); i++) {
+                        for (int i = 0; i < 2; i++) {
+                            Item item = new Item();
+
+
+                            try {
+                                JSONArray jsonArray  = new JSONArray( new JSONObject((Map) response.getJSONObject(i)));
+
+                                //JSONObject jsonObject = response.getJSONObject(i);
+                                item.setCardValue(jsonArray.getString(Integer.parseInt("1")));
+                                item.setmImageUrl(jsonArray.getString(Integer.parseInt("2")));
+                            } catch (JSONException e1) {
+                                e1.printStackTrace();
+                            }
+                            mItemList.add(item);
+
+                            /*for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject hit = jsonArray.getJSONObject(i);
 
                                 String imageUrl = hit.getString("image");
                                 String cardValue = hit.getString("value");
                                 //int likeCount = hit.getInt("likes");
 
-                                mExampleList.add(new Item(imageUrl, cardValue));
+                                mItemList.add(new Item(imageUrl, cardValue));*/
                             }
 
-                            mExampleAdapter.notifyDataSetChanged();
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+                            mExampleCustomRecyclerAdapter = new CustomRecyclerAdapter(MainActivity.this,mItemList);
+                        recyclerView.setAdapter(mExampleCustomRecyclerAdapter);
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -81,6 +98,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        mRequestQueue.add(request);
+        mRequestQueue.add(jsonArrayRequest);
     }
 }

@@ -12,6 +12,9 @@ public class Item {
         this.mImageUrl = mImageUrl;
         this.cardValue = cardValue;
     }
+    public Item(){
+
+    }
 
     public String getmImageUrl() {
         return mImageUrl;
